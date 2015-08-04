@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="znode_multifront" Class="ProductDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=DS-DEV-TEMP\DSP_DEL;Initial Catalog=znode_multifront;Persist Security Info=True;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="znode_multifrontConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ZNodeProduct" Member="ZNodeProducts">
+    <Type Name="ZNodeProduct">
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortDescription" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="FeaturesDesc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ProductNum" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RetailPrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="SalePrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="WholesalePrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ImageFile" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ImageAltTag" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Weight" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="Length" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="Width" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="Height" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="BeginActiveDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EndActiveDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ActiveInd" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CallForPricing" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="HomepageSpecial" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CategorySpecial" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="InventoryDisplay" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Keywords" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ManufacturerID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AdditionalInfoLink" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="AdditionalInfoLinkLabel" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ShippingRuleTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ShippingRate" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="SEOTitle" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SEOKeywords" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SEODescription" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Custom1" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Custom2" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Custom3" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ShipEachItemSeparately" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="AllowBackOrder" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="BackOrderMsg" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="DropShipInd" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DropShipEmailID" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Specifications" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="AdditionalInformation" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="InStockMsg" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="OutOfStockMsg" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="TrackInventoryInd" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="DownloadLink" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FreeShippingInd" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="NewProductInd" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SEOURL" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="MaxQty" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ShipSeparately" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FeaturedInd" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="WebServiceDownloadDte" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdateDte" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="SupplierID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RecurringBillingInd" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RecurringBillingInstallmentInd" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RecurringBillingPeriod" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="RecurringBillingFrequency" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="RecurringBillingTotalCycles" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RecurringBillingInitialAmount" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="TaxClassID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MinQty" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ReviewStateID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AffiliateUrl" Type="System.String" DbType="VarChar(512)" CanBeNull="true" />
+      <Column Name="IsShippable" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="AccountID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PortalID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Franchisable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>

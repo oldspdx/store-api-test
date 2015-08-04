@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="CategoryNode">
+  <DataContextMoniker Name="/CategoryNodeDataContext" />
+  <nestedChildShapes>
+    <classShape Id="2ebd412d-5402-4e24-82bb-9aac14ab4314" absoluteBounds="3.625, 2.375, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/CategoryNodeDataContext/ZNodeCategoryNode" />
+      <nestedChildShapes>
+        <elementListCompartment Id="485f63f0-6dc0-4d4c-8d97-914c88e03ef1" absoluteBounds="3.64, 2.835, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(4.33423076923077 : 5.29970540364583); (4.33423076923077 : 5.54970540364583); (4.92961538461539 : 5.54970540364583); (4.92961538461539 : 5.29970540364583)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/CategoryNodeDataContext/ZNodeCategoryNode/ZNodeCategoryNode_ZNodeCategoryNode" />
+      <nodes>
+        <classShapeMoniker Id="2ebd412d-5402-4e24-82bb-9aac14ab4314" />
+        <classShapeMoniker Id="2ebd412d-5402-4e24-82bb-9aac14ab4314" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

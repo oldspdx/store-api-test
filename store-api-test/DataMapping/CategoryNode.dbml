@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="znode_multifront" Class="CategoryNodeDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=DS-DEV-TEMP\DSP_DEL;Initial Catalog=znode_multifront;Persist Security Info=True;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="znode_multifrontConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ZNodeCategoryNode" Member="ZNodeCategoryNodes">
+    <Type Name="ZNodeCategoryNode">
+      <Column Name="CategoryNodeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CatalogID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentCategoryNodeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BeginDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Theme" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="MasterPage" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CSS" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ActiveInd" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="ZNodeCategoryNode_ZNodeCategoryNode" Member="ZNodeCategoryNodes" ThisKey="CategoryNodeID" OtherKey="ParentCategoryNodeID" Type="ZNodeCategoryNode" />
+      <Association Name="ZNodeCategoryNode_ZNodeCategoryNode" Member="ZNodeCategoryNode1" ThisKey="ParentCategoryNodeID" OtherKey="CategoryNodeID" Type="ZNodeCategoryNode" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

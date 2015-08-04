@@ -1,0 +1,357 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Product App</title>
+</head>
+<body>
+	<style>
+		#catalogResults div {
+			float: left;
+			padding:20px;
+			border: 1px solid blue;
+			width:310px;
+			margin-right:20px;
+			margin-bottom:10px;
+		}
+
+        	.products div {
+			float: left;
+			padding:20px;
+			border: 1px solid red;
+			width:310px;
+			margin-right:20px;
+			margin-bottom:10px;
+		}
+
+	</style>
+	<div>
+		<h3>Select a Portal</h3>
+		<div style="float:left;padding:20px;">
+			By NAME (partial search OK)<br />
+			<input type="text" id="searchByName" size="5" />
+			<input type="button" value="Search By Name" onclick="findPortalByName('searchByName','portalResult');" />
+		</div>
+		<div style="float:left;padding:20px;">
+			By Portal Number (blank for ALL)<br />
+			<input type="text" id="searchByNumber" size="5" />
+			<input type="button" value="Search By Name" onclick="findPortalByNumber('searchByNumber','portalResult');" />
+
+		</div>
+	</div>
+	<div style="clear:both">
+		<h3>Portal Results</h3>
+		<ul id="portalResult"></ul>
+	</div>
+
+	<div>
+		<div id="catalogResults"></div>
+
+	</div>
+
+	<div style="clear:both">
+		<h3>Category Results</h3>
+		<ul id="categoryResults"></ul>
+	</div>
+
+	<div>
+		<div id="productResults"></div>
+
+	</div>
+
+
+    <div></div>
+    <hr /><hr />
+    <h3>Search Tests</h3>
+    <div>
+        <h3>Select a Portal</h3>
+        <div style="float:left;padding:20px;">
+            By NAME (partial search OK)<br />
+            <input type="text" id="ST_searchByName" size="5" />
+            <input type="button" value="Search By Name" onclick="findPortalByName('ST_searchByName', 'ST_portalResult');" />
+        </div>
+        <div style="float:left;padding:20px;">
+            By Portal Number (blank for ALL)<br />
+            <input type="text" id="ST_searchByNumber" size="5" />
+            <input type="button" value="Search By Name" onclick="findPortalByNumber('ST_searchByNumber', 'ST_portalResult');" />
+
+        </div>
+
+        <div style="clear:both">
+            <h3>Portal Results</h3>
+            <ul id="ST_portalResult"></ul>
+        </div>
+
+        <div>
+            Portal Number:  <input type="text" id="ST_portalNmber" size="5" /><br />
+            Search Terms/Words:<input type="text" id="ST_Keywords" size="5" /><br />  
+            <input type="button" value="Search By Name" onclick="SearchForProducts('ST_portalNmber', 'ST_Keywords');" />
+            <br />
+            <div id="searchResults">
+
+            </div>
+        </div>
+
+    </div>
+
+	<!--<div style="clear:both;">
+		<h2>All Catalogs</h2>
+		<ul id="catalogs"></ul>
+	</div>
+
+	<div>
+		<h2>All PortalCatalogs</h2>
+		<ul id="PortalCatalogs"></ul>
+	</div>
+
+
+	<div>
+		<h2>Search Catalogs by PortalID</h2>
+		<input type="text" id="portalID" size="5" />
+		<input type="button" value="Search" onclick="find();" />
+		<p id="catalog"></p>
+	</div>
+
+	<div>
+		<h2>Search PortalCatalog by PortalID</h2>
+		<input type="text" id="portalID2" size="5" />
+		<input type="button" value="Search" onclick="find2();" />
+		<p id="PortalCatalog"></p>
+	</div>-->
+
+
+	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+	<script>
+		var uri = 'api/catalog';
+
+		var uri2 = 'api/portalCatalog';
+		var uriPortalCatalog = 'api/portalCatalog';
+		var uriPortal = 'api/portal';
+
+		var uriCategory = 'api/category';
+		var uriCategoryNode = 'api/categorynode';
+
+		//$(document).ready(function () {
+		//	// Send an AJAX request
+		//	$.getJSON(uri)
+		//		.done(function (data) {
+		//			// On success, 'data' contains a list of products.
+		//			$.each(data, function (key, item) {
+		//				// Add a list item for the product.
+		//				$('<li>', { text: formatItem(item) }).appendTo($('#catalogs'));
+		//			});
+		//		});
+		//});
+
+		function formatItem(item) {
+			return "catalog name: " + item.title + ", CatalogID: " + item.catalogID + ", Active: " + item.isActive + ", PortalID: " + item.portalID;
+		}
+
+		function formatItem2(item) {
+			return "catalog Theme: " + item.theme + ", CatalogID: " + item.catalogID + ", PortalCatalogID: " + item.PortalCatalogID + ", PortalID: " + item.portalID + ", LocaleID: " + item.localeID + ", CSS: " + item.CSS;
+		}
+
+		function formatPortal(item) {
+			return "Store Name: " + item.storeName + ", Company: " + item.companyName + ", Portal ID: " + item.portalID + ", isActive: " + item.isActive + " --- get catalogs ";
+		}
+
+
+		function formatCatalogs(item) {
+		    return "portalID: " + item.portalID + "<br/>catalogID: " + item.catalogID + "<br/>Catalog Name: " + item.title + "<br/>" + "<a href=\"javascript:GetCategory('" + item.catalogID + "')\">Get Categories</a>" + "" + "<br>";
+		}
+
+		function formatProductList(item) {
+		    return "Name: " + item.title + "<br/>Short Description: " + item.shortDescription + "<br/>Price: " + item.RetailPrice + "<br/>" +
+                "<a href=\"javascript:GetProductDetails('" + item.productID + "')\">Get Product Details</a>" + "" + "<br>" +
+		         "<ul id='prodDetail" + item.productID + "'></ul>";
+		}
+
+		function formatProductDetail(item) {
+		    return "Name: " + item.title +
+                "<br/>Short Description: " + item.shortDescription +
+                "<br/>Price: " + item.RetailPrice + "<br/>" +
+                "<br/>Sale Price: " + item.salePrice + "<br/>" +
+                "<br/>Description: " + item.description + "<br/>" +
+                "<br/>Product Number: " + item.productNumber + "<br/>" +
+                "<br>";
+
+		}
+		
+
+		function formatCategory(item) {
+		    return "Category name: " + item.title + "<br>Category ID: " + item.categoryID + "<br>Catalog ID: " + item.catalogID + "<br>PortalID: " + item.portalID +
+				"<br>Parent ID: " + item.parentCategoryNodeID + "<br>Short Description: " + item.shortDescription + "<br>Display Order: " + item.displayOrder + "<br>Active?: " + item.isActive +
+                "<br><a href='javascript:GetSubCategory(" + item.catalogID + "," + item.categoryNodeID + "," + item.categoryNodeID + ")'>" + " get sub category " + "</a>" +
+                "<br><a href='javascript:GetProducts(" + item.categoryID + "," + item.categoryNodeID + ")'>" + " get products " + "</a>" +
+                "<br><br>" +
+                "<ul id='catResult" + item.categoryNodeID + "'></ul>" +
+                "<div id='prodResult" + item.categoryNodeID + "' class='products'></div><div style='clear:both'></div>" +
+                
+                "<br><hr><br>";
+		}
+
+
+		function GetCatalogs(catID) {
+			$('#catalogResults').empty();
+			$.getJSON(uriPortalCatalog + '/' + catID)
+				.done(function (data) {
+					$.each(data, function (key, item) {
+						// Add a list item for the product.
+						$('<div>', { html: formatCatalogs(item) }).appendTo($('#catalogResults'));
+					});
+				})
+				.fail(function (jqXHR, textStatus, err) {
+					$('#catalogResults').text('Error: ' + err);
+				});
+		}
+
+
+
+		function find() {
+			var id = $('#portalID').val();
+			$.getJSON(uri + '/' + id)
+				.done(function (data) {
+					$('#catalog').text(formatItem(data));
+				})
+				.fail(function (jqXHR, textStatus, err) {
+					$('#catalog').text('Error: ' + err);
+				});
+		}
+
+		function find2() {
+			var id = $('#portalID2').val();
+			$.getJSON(uri2 + '/' + id)
+				.done(function (data) {
+					$('#PortalCatalog').text(formatItem2(data));
+				})
+				.fail(function (jqXHR, textStatus, err) {
+					$('#PortalCatalog').text('Error: ' + err);
+				});
+		}
+
+		function findPortalByName(source,results) {
+
+		    source = "#" + source;
+		    results = "#" + results;
+		    var pName = $(source).val();
+
+		    $(results).empty();
+			$.getJSON(uriPortal + '/storename/' + pName)
+				.done(function (data) {
+					$.each(data, function (key, item) {
+						// Add a list item for the product.
+					    $('<li>', { text: formatPortal(item) }).appendTo($(results)).append("<a href='javascript:GetCatalogs(" + item.portalID + ")'>" + " get catalog " + "</a>");
+					});
+				})
+				.fail(function (jqXHR, textStatus, err) {
+				    $(results).text('Error: ' + err);
+				});
+		}
+
+		function findPortalByNumber(source, results) {
+
+		    source = "#" + source;
+		    results = "#" + results;
+
+		    var id = $(source).val();
+		    $(results).empty();
+			$.getJSON(uriPortal + '/' + id)
+				.done(function (data) {
+					$.each(data, function (key, item) {
+						// Add a list item for the product.
+					    $('<li>', { text: formatPortal(item) }).appendTo($(results));
+					});
+				})
+			.fail(function (jqXHR, textStatus, err) {
+			    $(results).text('Error: ' + err);
+			});
+		}
+
+
+
+		function GetCategory(catID) {
+			$('#categoryResults').empty();
+			$.getJSON(uriCategoryNode + '/' + catID)
+				.done(function (data) {
+					$.each(data, function (key, item) {
+						// Add a list item for the product.
+					    $('<div>', { html: formatCategory(item) }).appendTo($('#categoryResults'));
+					});
+				})
+				.fail(function (jqXHR, textStatus, err) {
+					$('#categoryResults').text('Error: ' + err);
+				});
+		}
+
+
+		function GetSubCategory(catID, pID, rec) {
+		    var target = '#catResult' + rec;
+		    $(target).empty();
+		    $.getJSON(uriCategoryNode + '/' + catID + '/parent/' + pID)
+				.done(function (data) {
+				    $.each(data, function (key, item) {
+				        // Add a list item for the product.
+				        $('<li>', { html: formatCategory(item) }).appendTo($(target));
+				    });
+				})
+				.fail(function (jqXHR, textStatus, err) {
+				    $(target).text('Error: ' + err);
+				});
+		}
+
+
+		function GetProducts(categoryID, categoryNodeID) {
+		    var target = '#prodResult' + categoryNodeID;
+		    $(target).empty();
+		    $.getJSON("api/product/category/" + categoryID)
+				.done(function (data) {
+				    $.each(data, function (key, item) {
+				        // Add a list item for the product.
+				        $('<div>', { html: formatProductList(item) }).appendTo($(target));
+				    });
+				})
+				.fail(function (jqXHR, textStatus, err) {
+				    $(target).text('Error: ' + err);
+				});
+		}
+
+		function GetProductDetails(productID) {
+		    var target = '#prodDetail' + productID;
+		    $(target).empty();
+		    $.getJSON("api/product/" + productID)
+				.done(function (data) {
+				    $.each(data, function (key, item) {
+				        // Add a list item for the product.
+				        $('<li>', { html: formatProductDetail(item) }).appendTo($(target));
+				    });
+				})
+				.fail(function (jqXHR, textStatus, err) {
+				    $(target).text('Error: ' + err);
+				});
+		}
+
+		
+		function SearchForProducts(portalID, searchItems) {
+
+		     portalID = '#' + portalID;
+		     var id = $(portalID).val();
+		     searchItems = '#' + searchItems;
+		     var terms = $(searchItems).val();
+		     var target = "#searchResults";
+
+		    $(target).empty();
+		    $.getJSON("api/product/" + id + "/keyword/" + terms)
+				.done(function (data) {
+				    $.each(data, function (key, item) {
+				        // Add a list item for the product.
+				        $('<li>', { html: formatProductList(item) }).appendTo($(target));
+				    });
+				})
+				.fail(function (jqXHR, textStatus, err) {
+				    $(target).text('Error: ' + err);
+				});
+		}
+
+
+	</script>
+</body>
+</html>

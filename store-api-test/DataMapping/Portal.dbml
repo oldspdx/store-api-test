@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="znode_multifront" Class="PortalDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=DS-DEV-TEMP\DSP_DEL;Initial Catalog=znode_multifront;Persist Security Info=True;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="znode_multifrontConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ZNodePortal" Member="ZNodePortals">
+    <Type Name="ZNodePortal">
+      <Column Name="PortalID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="StoreName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="LogoPath" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="UseSSL" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="AdminEmail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SalesEmail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CustomerServiceEmail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SalesPhoneNumber" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CustomerServicePhoneNumber" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ImageNotAvailablePath" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="MaxCatalogDisplayColumns" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="MaxCatalogDisplayItems" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MaxCatalogCategoryDisplayThumbnails" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MaxCatalogItemSmallThumbnailWidth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MaxCatalogItemSmallWidth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MaxCatalogItemMediumWidth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MaxCatalogItemThumbnailWidth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MaxCatalogItemLargeWidth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MaxCatalogItemCrossSellWidth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShowSwatchInCategory" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShowAlternateImageInCategory" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ActiveInd" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SMTPServer" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SMTPUserName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SMTPPassword" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SMTPPort" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SiteWideBottomJavascript" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="SiteWideTopJavascript" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="OrderReceiptAffiliateJavascript" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="SiteWideAnalyticsJavascript" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="GoogleAnalyticsCode" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="UPSUserName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="UPSPassword" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="UPSKey" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ShippingOriginZipCode" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MasterPage" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ShopByPriceMin" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShopByPriceMax" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShopByPriceIncrement" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FedExAccountNumber" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FedExMeterNumber" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FedExProductionKey" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FedExSecurityCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FedExCSPKey" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FedExCSPPassword" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FedExClientProductId" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FedExClientProductVersion" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FedExDropoffType" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FedExPackagingType" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FedExUseDiscountRate" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="FedExAddInsurance" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ShippingOriginAddress1" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ShippingOriginAddress2" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ShippingOriginCity" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ShippingOriginStateCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ShippingOriginCountryCode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ShippingOriginPhone" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CurrencyTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="WeightUnit" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="DimensionUnit" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="EmailListLogin" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="EmailListPassword" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="EmailListDefaultList" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ShippingTaxable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultOrderStateID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DefaultReviewStatus" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
+      <Column Name="DefaultAnonymousProfileID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DefaultRegisteredProfileID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="InclusiveTax" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SeoDefaultProductTitle" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SeoDefaultProductDescription" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SeoDefaultProductKeyword" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SeoDefaultCategoryTitle" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SeoDefaultCategoryDescription" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SeoDefaultCategoryKeyword" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SeoDefaultContentTitle" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SeoDefaultContentDescription" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SeoDefaultContentKeyword" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="TimeZoneOffset" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="LocaleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SplashCategoryID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SplashImageFile" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="MobileTheme" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PersistentCartEnabled" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

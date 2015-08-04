@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="znode_multifront" Class="CategoryDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=DS-DEV-TEMP\DSP_DEL;Initial Catalog=znode_multifront;Persist Security Info=True;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="znode_multifrontConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ZNodeCategory" Member="ZNodeCategories">
+    <Type Name="ZNodeCategory">
+      <Column Name="CategoryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ShortDescription" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ImageFile" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ImageAltTag" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="VisibleInd" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SubCategoryGridVisibleInd" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SEOTitle" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SEOKeywords" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SEODescription" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="AlternateDescription" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Custom1" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Custom2" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Custom3" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="SEOURL" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="PortalID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>
