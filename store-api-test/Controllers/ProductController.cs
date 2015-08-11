@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using store_api_test.Models;
 using store_api_test.DataMapping;
+using store_api_test;
+
 
 
 namespace store_api_test.Controllers
@@ -14,6 +16,8 @@ namespace store_api_test.Controllers
     {
 
 		Product prodObject = new Product();
+
+		
 
 		public IHttpActionResult GetProducts(int id)
 		{
@@ -39,46 +43,55 @@ namespace store_api_test.Controllers
 		}
 
 
-
-
 		public IHttpActionResult GetProducyByKeyword(int portalID, string textstring)
 		{
-			// TODO: replace this with a more efficient algorithm. Just getting endpoinst in place 
+			// TODO: replace this with a more efficient algorithm. Just getting endpoints in place 
 			// and test cases written
 
-			// get all categories for the portal
-			PortalCatalogController catObject = new PortalCatalogController();
-			IEnumerable<PortalCatalog> catalogs = catObject.GetCatalogs(portalID);
+			String sMode = null;
+			String sFields = null;
 
-			CategoryNodeController cateNodeDB = new CategoryNodeController();
+			//optional params of fieldName = all | title | description  mode = all | exact | any
+			var modifiers = RequestHelpers.GetQueryStrings(this.Request);
 
-			//IEnumerable<CategoryNode> cateNode = cateNodeDB.GetCategoryNode(2);
-
-			// now get all pructs for these categories
-
-			IEnumerable<Product> product = prodObject.ReadDB(null, null);
-			IEnumerable<Product> productList;
-
-			if (product != null)
+			if (modifiers.Count>0)
 			{
-				productList = product.Where(row => row.portalID==portalID && row.title.ToLower().Contains(textstring));
+				if (modifiers.ContainsKey("mode"))
+					sMode = modifiers["mode"];
 
+				if (modifiers.ContainsKey("fieldname"))
+					sFields = modifiers["fieldname"];
+            }
+
+		
+			Search search = new Search();
+			search.PortalID = portalID;
+            IEnumerable<Product> productList = null; 
+			if (search.Keywords(textstring, sFields, sMode))
+			{
+				productList = search.ProductList;
 			}
 
-
-			if (product == null)
+			if (productList == null)
 			{
 				return NotFound();
 			}
-			return Ok(product);
+			return Ok(productList);
 		}
 
 
 
-		public IEnumerable<Product> GetAllProducts()
+		public IHttpActionResult GetAllProducts()
 		{
+			if (this.Request.RequestUri.ToString().Contains("keyword"))
+			{
+				var message = "No keyword provided";
+				return BadRequest(message);
+
+			}
+
 			IEnumerable<Product> data = prodObject.ReadDB(null, null);
-			return data;
+			return Ok(data);
 		}
 
 

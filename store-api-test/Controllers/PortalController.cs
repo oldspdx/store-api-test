@@ -12,6 +12,8 @@ namespace store_api_test.Controllers
     public class PortalController : ApiController
     {
 
+		
+
 		public IHttpActionResult GetPortal(int id)
 		{
 
@@ -29,15 +31,12 @@ namespace store_api_test.Controllers
 
 
 		
-		public IHttpActionResult GetPortalByName(String title)
+		public IHttpActionResult GetPortalByName(String name)
 		{
-			title = title.ToLower();
-
-			Search s = new Search();
-			s.test("mug");
+			name = name.ToLower();
 
 			IEnumerable<Portal> iPortal = ReadDB();
-			var portal = (from tempdata in iPortal where tempdata.storeName.ToLower().Contains(title) select tempdata);
+			var portal = (from tempdata in iPortal where tempdata.storeName.ToLower().Contains(name) select tempdata);
 			if (portal == null)
 			{
 				return NotFound();
@@ -48,11 +47,13 @@ namespace store_api_test.Controllers
 
 
 
-		//public IEnumerable<Portal> GetAllPortals()
-		//{
-		//	IEnumerable<Portal> data = ReadDB();
-		//	return data;
-		//}
+		public IEnumerable<Portal> GetAllPortals()
+		{
+			Configuration.Services.GetTraceWriter();
+
+			IEnumerable<Portal> data = ReadDB();
+			return data;
+		}
 
 
 

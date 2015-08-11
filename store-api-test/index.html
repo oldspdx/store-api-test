@@ -123,8 +123,8 @@
 	<script>
 		var uri = 'api/catalog';
 
-		var uri2 = 'api/portalCatalog';
-		var uriPortalCatalog = 'api/portalCatalog';
+		var uri2 = 'api/PortalCatalog';
+		var uriPortalCatalog = 'api/PortalCatalog';
 		var uriPortal = 'api/portal';
 
 		var uriCategory = 'api/category';
@@ -337,7 +337,7 @@
 		     searchItems = '#' + searchItems;
 		     var terms = $(searchItems).val();
 		     var target = "#searchResults";
-
+		    // api / product / { portalID } / keyword / { textstring }
 		    $(target).empty();
 		    $.getJSON("api/product/" + id + "/keyword/" + terms)
 				.done(function (data) {

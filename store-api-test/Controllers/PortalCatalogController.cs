@@ -34,11 +34,11 @@ namespace store_api_test.Controllers
 		}
 
 
-		public IEnumerable<PortalCatalog> GetCatalogs(int id)
-		{
-			IEnumerable<PortalCatalog> catalog = catObject.ReadDB(id);
-			return (catalog);
-		}
+		//public IEnumerable<PortalCatalog> GetCatalogs(int id)
+		//{
+		//	IEnumerable<PortalCatalog> catalog = catObject.ReadDB(id);
+		//	return (catalog);
+		//}
 
 
 	}

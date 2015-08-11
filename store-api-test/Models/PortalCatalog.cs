@@ -15,7 +15,7 @@ namespace store_api_test.Models
 		public int localeID { get; set; }
 
 		public string theme { get; set; }
-		public string title { get; set; }
+		public string name { get; set; }
 		public string CSS { get; set; }
 
 
@@ -54,7 +54,7 @@ namespace store_api_test.Models
 								portalID = row.PortalID,
 								localeID = row.LocaleID,
 								portalCatalogID = row.PortalCatalogID,
-								title = row.Name,
+								name = row.Name,
 								theme = row.Theme,
 								isActive = row.IsActive
 							});
