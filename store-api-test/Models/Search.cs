@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Dynamic;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,6 +18,11 @@ namespace store_api_test.Models
 
 		public Boolean Keywords(string searchtext, string fieldname, string mode)
 		{
+			//TODO: DEBUG_DAO create a function to build these filters. using brute force right now
+			// need to add quoted phrases, exclude operators, whole or partial wor support
+			// algorithm not always returning values, or sometimes rturns multiple when there should be one
+
+
 			PortalCatalogDataContext dbPortalCatalog = new PortalCatalogDataContext();
 			PortalDataContext dbPortal = new PortalDataContext();
 			CategoryNodeDataContext dbCategoryNode = new CategoryNodeDataContext();
@@ -91,11 +95,32 @@ namespace store_api_test.Models
 							}
 						);
 
-			//TODO: DEBUG_DAO create a function to build these filters. using brute force right now
+		
+			// set operational modes
+			//fieldName = all | title | description    mode = all | exact | any
 
-			//	productlist = productlist.Where("");
+			if ((fieldname != null) && (fieldname.Length > 0))
+			{
+				fieldname = fieldname.ToLower();
+			}
+			else
+			{
+				fieldname = null;
+			}
 
-			String[] sWords = new String[] { };
+			if ((mode != null) && (mode.Length > 0))
+			{
+				mode = mode.ToLower();
+			}
+			else
+			{
+				mode = null;
+			}
+
+
+			// get any search terms
+
+			String[] searchTerms = new String[] { };
 			string[] separators = { ",", ".", "!", "?", ";", ":", " " };
 
 			if (mode!=null)
@@ -103,107 +128,194 @@ namespace store_api_test.Models
 				mode = mode.ToLower();
 				if (mode == "all" || mode == "any")
 				{
-					sWords = searchtext.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+					searchTerms = searchtext.Split(separators, StringSplitOptions.RemoveEmptyEntries);
 				}
-
+				else
+				{
+					searchTerms = null; // use searctext for an exact phrase matching 
+                }
 			}
 
-			if (fieldname != null)
+
+			if (fieldname == "all" || fieldname == null)
 			{
-				fieldname = fieldname.ToLower();
-				if (fieldname == "all")
+				if (mode == "exact")
 				{
 					productlist = productlist
-									.Where
-										(
-										row => row.title.ToLower().Contains(searchtext) ||
-										row.description.ToLower().Contains(searchtext) ||
-										row.keywords.ToLower().Contains(searchtext) ||
-										row.shortDescription.ToLower().Contains(searchtext) ||
-										row.SEOKeywords.ToLower().Contains(searchtext) ||
-										row.SEOTitle.ToLower().Contains(searchtext) ||
-										row.SEODescription.ToLower().Contains(searchtext)
-										);
+										.Where
+											(
+											row => row.title.ToLower().Contains(searchtext) ||
+											row.description.ToLower().Contains(searchtext) ||
+											row.keywords.ToLower().Contains(searchtext) ||
+											row.shortDescription.ToLower().Contains(searchtext) ||
+											row.SEOKeywords.ToLower().Contains(searchtext) ||
+											row.SEOTitle.ToLower().Contains(searchtext) ||
+											row.SEODescription.ToLower().Contains(searchtext)
+											);
+				}
+				else if ((mode == "any") || (mode == null))
+				{
+					productlist = productlist
+						.Where
+							(
+							row => searchTerms.Any
+								(
+									// using most common fields now
+									term => row.title.ToLower().Contains(term) ||
+									row.description.ToLower().Contains(term) ||
+									row.keywords.ToLower().Contains(term)
+								//row.shortDescription.ToLower().Contains(term) ||
+								//row.SEOKeywords.ToLower().Contains(term) ||
+								//row.SEOTitle.ToLower().Contains(term) ||
+								//row.SEODescription.ToLower().Contains(term)
+								)
+						);
+
 
 				}
-				else if (fieldname == "title")
+				else if (mode == "all")
 				{
 					productlist = productlist
-									.Where
-										(
-										row => row.title.ToLower().Contains(searchtext)
-										);
+						.Where
+							(
+							row => searchTerms.All
+								(
+									// using most common fields now
+									term => row.title.ToLower().Contains(term) ||
+									row.description.ToLower().Contains(term) ||
+									row.keywords.ToLower().Contains(term)
+								//row.shortDescription.ToLower().Contains(term) ||
+								//row.SEOKeywords.ToLower().Contains(term) ||
+								//row.SEOTitle.ToLower().Contains(term) ||
+								//row.SEODescription.ToLower().Contains(term)
+								)
+						);
 
-				}
-				else if (fieldname == "description")
-				{
-					productlist = productlist
-									.Where
-										(
-										row => row.description.ToLower().Contains(searchtext)
-										);
-
-				}
-				else if (fieldname == "keyword")
-				{
-					productlist = productlist
-									.Where
-										(
-										row => row.keywords.ToLower().Contains(searchtext)
-										);
 
 				}
 			}
-			else
+			else if (fieldname == "title")
 			{
-				if (mode == "any")
+				if (mode == "exact")
 				{
 					productlist = productlist
-								.Where (row => row.title.ToLower().Contains("") ||
-									row.description.ToLower().Contains(searchtext) ||
-									row.keywords.ToLower().Contains(searchtext) ||
-									row.shortDescription.ToLower().Contains(searchtext)
-									);
+										.Where
+											(
+											row => row.title.ToLower().Contains(searchtext)
+											);
 				}
-				else if (mode=="all")
+				else if ((mode == "any") || (mode == null))
 				{
-					String sQ = null;
-
-					for (int x =0; x < sWords.Length; x++)
-					{
-						sQ += "( title like '%" + sWords[x] + "%' ) ";
-						if (x < sWords.Length - 1)
-						{
-							sQ += " AND ";
-						}
-                    }
-
-					productlist = productlist.Where(sQ);
-				}
-				else {
-					// exact match of phrase
 					productlist = productlist
-									.Where
-										(
-										row => row.title.ToLower().Contains(searchtext) ||
-										row.description.ToLower().Contains(searchtext) ||
-										row.keywords.ToLower().Contains(searchtext) ||
-										row.shortDescription.ToLower().Contains(searchtext)
-										);
+						.Where
+							(
+							row => searchTerms.Any
+								(
+									term => row.title.ToLower().Contains(term) 
+								)
+						);
+				}
+				else if (mode == "all")
+				{
+					productlist = productlist
+						.Where
+							(
+							row => searchTerms.All
+								(
+									term => row.title.ToLower().Contains(term)
+								)
+						);
 				}
 			}
+			else if (fieldname == "description")
+			{
+				if (mode == "exact")
+				{
+					productlist = productlist
+										.Where
+											(
+											row => row.description.ToLower().Contains(searchtext)
+											);
+				}
+				else if ((mode == "any") || (mode == null))
+				{
+					productlist = productlist
+						.Where
+							(
+							row => searchTerms.Any
+								(
+									term => row.description.ToLower().Contains(term)
+								)
+						);
+				}
+				else if (mode == "all")
+				{
+					productlist = productlist
+						.Where
+							(
+							row => searchTerms.All
+								(
+									term => row.description.ToLower().Contains(term)
+								)
+						);
+				}
 
+			}
+			else if (fieldname == "keywords")
+			{
+				if (mode == "exact")
+				{
+					productlist = productlist
+										.Where
+											(
+											row => row.keywords.ToLower().Contains(searchtext)
+											);
+				}
+				else if ((mode == "any") || (mode == null))
+				{
+					productlist = productlist
+						.Where
+							(
+							row => searchTerms.Any
+								(
+									term => row.keywords.ToLower().Contains(term)
+								)
+						);
+				}
+				else if (mode == "all")
+				{
+					productlist = productlist
+						.Where
+							(
+							row => searchTerms.All
+								(
+									term => row.keywords.ToLower().Contains(term)
+								)
+						);
+				}
+
+			}
+
+
+		
 
 			productlist = productlist
-							.OrderBy(row => row.productCategoryID);
+							.OrderBy(row => row.productCategoryID)
+							.Take(100);
 
-			//dbPortalCatalog.Dispose();
-			ProductList = productlist;
-
+	
+		
 			if (productlist != null)
 			{
-				fStatus = true;
-				Count = productlist.Count();
+				try {
+					fStatus = true;
+					Count = productlist.Count();
+				}
+				catch (Exception e)
+				{
+					Count = 0;
+					productlist = null;
+                }
             }
 
 		

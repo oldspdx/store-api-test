@@ -48,7 +48,7 @@ namespace store_api_test.Models
 			IEnumerable<Product> iProduct;
 			ProductDataContext dbProducts = new ProductDataContext();
 			ProductCategoryDataContext dbProdCategories = new ProductCategoryDataContext();
-			iProduct = dbProducts.ZNodeProducts.AsEnumerable()
+			iProduct = dbProducts.ZNodeProducts.AsQueryable()
 				.Join
 					(dbProdCategories.ZNodeProductCategories,
 						_Products => _Products.ProductID,
