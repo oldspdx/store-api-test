@@ -16,6 +16,7 @@ namespace store_api_test.Models
 		public int accountID { get; set; }
 		public int portalID { get; set; }
 		public int categoryID { get; set; }
+		public int parentCategoryID { get; set; }
 
 		public decimal weight { get; set; }
 		public decimal length { get; set; }
@@ -38,6 +39,8 @@ namespace store_api_test.Models
 		public string keywords { get; set; }
 		public string SEODescription { get; set; }
 		public string SEOKeywords { get; set; }
+		public string categoryName { get; set; }
+		public string parentCategoryName { get; set; }
 
 		public DateTime? dateStart { get; set; }
 		public DateTime? dateEnd { get; set; }
@@ -48,7 +51,7 @@ namespace store_api_test.Models
 			IEnumerable<Product> iProduct;
 			ProductDataContext dbProducts = new ProductDataContext();
 			ProductCategoryDataContext dbProdCategories = new ProductCategoryDataContext();
-			iProduct = dbProducts.ZNodeProducts.AsQueryable()
+			iProduct = dbProducts.ZNodeProducts.AsEnumerable()
 				.Join
 					(dbProdCategories.ZNodeProductCategories,
 						_Products => _Products.ProductID,
@@ -92,6 +95,9 @@ namespace store_api_test.Models
 						salePrice = row.SalePrice,
 						retailPrice = row.RetailPrice,
 						isOnSale = (row.SalePrice.HasValue) ? true : false,
+						parentCategoryID = 0, 
+						categoryName = "",
+						parentCategoryName = "",
 						portalID = (!row.PortalID.HasValue) ? 0 : (int)row.PortalID
 					});
 			if (pID.HasValue)

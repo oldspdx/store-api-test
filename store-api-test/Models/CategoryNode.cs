@@ -34,7 +34,6 @@ namespace store_api_test.Models
 			IEnumerable<CategoryNode> iCatNode;
 			CategoryNodeDataContext db = new CategoryNodeDataContext();
 			CategoryDataContext dbCategory = new CategoryDataContext();
-		
 
 			iCatNode = db.ZNodeCategoryNodes.AsEnumerable()
 				.Join

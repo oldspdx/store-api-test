@@ -28,6 +28,7 @@ namespace store_api_test.Models
 			CategoryNodeDataContext dbCategoryNode = new CategoryNodeDataContext();
 			ProductCategoryDataContext dbProductCategory = new ProductCategoryDataContext();
 			ProductDataContext dbProduct = new ProductDataContext();
+			CategoryDataContext dbCategories = new CategoryDataContext();
 
 			PortalCatalog portal = new PortalCatalog();
 
@@ -38,26 +39,18 @@ namespace store_api_test.Models
 
 			var listPortalCatalog = portal.ReadDB(PortalID);
 
-			var productlist = listPortalCatalog.AsQueryable()
+			var _productlist = listPortalCatalog.AsEnumerable()
 
 					// staring with the portal ID, grab all catalogs for that portal
-					.Join
-						(dbPortalCatalog.ZNodePortalCatalogs,
-							tempPortalCatalogs => tempPortalCatalogs.portalID,
-							tempPortalCategories => tempPortalCategories.PortalID,
-								(tempPortalCatalogs, tempPortalCategories) => new
-								{ tempPortalCatalogs = tempPortalCatalogs, tempPortalCategories = tempPortalCategories }
-						) // produces joinedPortalCatalogs
-
+				
 					// get mapping of catalogs to various categories
 					.Join
 						(dbCategoryNode.ZNodeCategoryNodes,
-							joinedPortalCatalogs => joinedPortalCatalogs.tempPortalCategories.CatalogID,
+							joinedPortalCatalogs => joinedPortalCatalogs.catalogID,
 							tempCategoryNode => tempCategoryNode.CatalogID,
 								(joinedPortalCatalogs, tempCategoryNode) => new
 								{ joinedPortalCatalogs = joinedPortalCatalogs, tempCategoryNode = tempCategoryNode }
 						) // produces joinedCategoryNode
-
 					// get mapping of all product IDs within categories
 					.Join
 						(dbProductCategory.ZNodeProductCategories,
@@ -66,7 +59,6 @@ namespace store_api_test.Models
 								(joinedCategoryNode, tempProductCategories) => new
 								{ joinedCategoryNode = joinedCategoryNode, tempProductCategories = tempProductCategories }
 						) // produces joinedProductCategories
-
 					// get mapping of all products to categories and get product details
 					.Join
 						(dbProduct.ZNodeProducts,
@@ -75,11 +67,13 @@ namespace store_api_test.Models
 								(joinedProductCategories, tempProducts) => new
 								{ joinedProductCategories = joinedProductCategories, tempProducts = tempProducts }
 						)  // produces final product list (tempProducts)
-
+					.Distinct()
 					.Select
 						(row => new Product
-						{
-							productID = row.tempProducts.ProductID,
+							{
+								productID = row.tempProducts.ProductID,
+								parentCategoryID = row.joinedProductCategories.tempProductCategories.CategoryID,
+								categoryID = row.joinedProductCategories.joinedCategoryNode.tempCategoryNode.CategoryID,
 								shortDescription = row.tempProducts.ShortDescription,
 								description = row.tempProducts.Description,
 								productNumber = row.tempProducts.ProductNum,
@@ -91,7 +85,6 @@ namespace store_api_test.Models
 								retailPrice = row.tempProducts.RetailPrice,
 								isOnSale = (row.tempProducts.SalePrice.HasValue) ? true : false,
 								portalID = (!row.tempProducts.PortalID.HasValue) ? 0 : (int)row.tempProducts.PortalID
-
 							}
 						);
 
@@ -123,10 +116,11 @@ namespace store_api_test.Models
 			String[] searchTerms = new String[] { };
 			string[] separators = { ",", ".", "!", "?", ";", ":", " " };
 
-			if (mode!=null)
+			if (mode != null)
 			{
 				mode = mode.ToLower();
-				if (mode == "all" || mode == "any")
+			}
+				if (mode == "all" || mode == "any" || mode==null)
 				{
 					searchTerms = searchtext.Split(separators, StringSplitOptions.RemoveEmptyEntries);
 				}
@@ -134,14 +128,14 @@ namespace store_api_test.Models
 				{
 					searchTerms = null; // use searctext for an exact phrase matching 
                 }
-			}
+			
 
 
 			if (fieldname == "all" || fieldname == null)
 			{
 				if (mode == "exact")
 				{
-					productlist = productlist
+					_productlist = _productlist
 										.Where
 											(
 											row => row.title.ToLower().Contains(searchtext) ||
@@ -155,41 +149,67 @@ namespace store_api_test.Models
 				}
 				else if ((mode == "any") || (mode == null))
 				{
-					productlist = productlist
-						.Where
-							(
+					var p1 = _productlist
+					.Where
+					(
 							row => searchTerms.Any
+							(
+								term => row.title.ToLower().Contains(term)
+							)
+					);
+					var p2 = _productlist
+							.Where
+						(
+								row => searchTerms.Any
 								(
-									// using most common fields now
-									term => row.title.ToLower().Contains(term) ||
-									row.description.ToLower().Contains(term) ||
-									row.keywords.ToLower().Contains(term)
-								//row.shortDescription.ToLower().Contains(term) ||
-								//row.SEOKeywords.ToLower().Contains(term) ||
-								//row.SEOTitle.ToLower().Contains(term) ||
-								//row.SEODescription.ToLower().Contains(term)
+									term => row.description.ToLower().Contains(term)
 								)
 						);
+					var p3 = _productlist
+						.Where
+						(
+								row => searchTerms.Any
+								(
+									term => row.keywords.ToLower().Contains(term)
+								)
+						);
+
+					_productlist = p1.Union(p2).ToList();
 
 
 				}
 				else if (mode == "all")
 				{
-					productlist = productlist
-						.Where
+
+					var p1 = _productlist
+							.Where
 							(
-							row => searchTerms.All
+									row => searchTerms.All
+									(
+										term => row.title.ToLower().Contains(term)
+									)
+							);
+					var p2 = _productlist
+							.Where
+						(
+								row => searchTerms.All
 								(
-									// using most common fields now
-									term => row.title.ToLower().Contains(term) ||
-									row.description.ToLower().Contains(term) ||
-									row.keywords.ToLower().Contains(term)
-								//row.shortDescription.ToLower().Contains(term) ||
-								//row.SEOKeywords.ToLower().Contains(term) ||
-								//row.SEOTitle.ToLower().Contains(term) ||
-								//row.SEODescription.ToLower().Contains(term)
+									term => row.description.ToLower().Contains(term)
 								)
 						);
+                    var p3 = _productlist
+						.Where
+						(
+								row => searchTerms.All
+								(
+									term => row.keywords.ToLower().Contains(term)
+								)
+						);
+
+					_productlist = p1.Union(p2).ToList();
+					
+
+					//_productlist.Union(p3);
 
 
 				}
@@ -198,7 +218,7 @@ namespace store_api_test.Models
 			{
 				if (mode == "exact")
 				{
-					productlist = productlist
+					_productlist = _productlist
 										.Where
 											(
 											row => row.title.ToLower().Contains(searchtext)
@@ -206,7 +226,7 @@ namespace store_api_test.Models
 				}
 				else if ((mode == "any") || (mode == null))
 				{
-					productlist = productlist
+					_productlist = _productlist
 						.Where
 							(
 							row => searchTerms.Any
@@ -217,21 +237,21 @@ namespace store_api_test.Models
 				}
 				else if (mode == "all")
 				{
-					productlist = productlist
+					_productlist = _productlist
 						.Where
 							(
-							row => searchTerms.All
-								(
-									term => row.title.ToLower().Contains(term)
-								)
-						);
+								row => searchTerms.All
+									(
+										term => row.title.ToLower().Contains(term)
+									)
+							);
 				}
 			}
 			else if (fieldname == "description")
 			{
 				if (mode == "exact")
 				{
-					productlist = productlist
+					_productlist = _productlist
 										.Where
 											(
 											row => row.description.ToLower().Contains(searchtext)
@@ -239,7 +259,7 @@ namespace store_api_test.Models
 				}
 				else if ((mode == "any") || (mode == null))
 				{
-					productlist = productlist
+					_productlist = _productlist
 						.Where
 							(
 							row => searchTerms.Any
@@ -250,7 +270,7 @@ namespace store_api_test.Models
 				}
 				else if (mode == "all")
 				{
-					productlist = productlist
+					_productlist = _productlist
 						.Where
 							(
 							row => searchTerms.All
@@ -265,7 +285,7 @@ namespace store_api_test.Models
 			{
 				if (mode == "exact")
 				{
-					productlist = productlist
+					_productlist = _productlist
 										.Where
 											(
 											row => row.keywords.ToLower().Contains(searchtext)
@@ -273,7 +293,7 @@ namespace store_api_test.Models
 				}
 				else if ((mode == "any") || (mode == null))
 				{
-					productlist = productlist
+					_productlist = _productlist
 						.Where
 							(
 							row => searchTerms.Any
@@ -284,7 +304,7 @@ namespace store_api_test.Models
 				}
 				else if (mode == "all")
 				{
-					productlist = productlist
+					_productlist = _productlist
 						.Where
 							(
 							row => searchTerms.All
@@ -297,24 +317,25 @@ namespace store_api_test.Models
 			}
 
 
-		
 
-			productlist = productlist
-							.OrderBy(row => row.productCategoryID)
-							.Take(100);
+
+			_productlist = _productlist
+							.OrderBy(row => row.productCategoryID);
+
 
 	
 		
-			if (productlist != null)
+			if (_productlist != null)
 			{
 				try {
 					fStatus = true;
-					Count = productlist.Count();
+					Count = _productlist.Count();
+					ProductList = _productlist;
 				}
 				catch (Exception e)
 				{
 					Count = 0;
-					productlist = null;
+					ProductList = null;
                 }
             }
 

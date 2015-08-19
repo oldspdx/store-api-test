@@ -49,7 +49,7 @@ namespace store_api_test
 			//optional params of fieldName = all | title | description  mode = all | exact | any
             config.Routes.MapHttpRoute(
 				name: "ProducyByKeyword",
-				routeTemplate: "api/product/{portalID}/keyword/{textstring}/{fieldname}/{mode}",
+				routeTemplate: "api/product/portal/{portalID}/keyword/{textstring}/{fieldname}/{mode}",
 				defaults: new
 				{
 					controller = "Product",

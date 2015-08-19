@@ -79,8 +79,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="default.asp" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
+    <Content Include="Json2Parser.asp" />
     <Content Include="Libraries\System.Linq.Dynamic.dll" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -109,6 +111,7 @@
       <LastGenOutput>Product.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Properties\PublishProfiles\store-test-deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
